@@ -16,8 +16,8 @@ const ItemList: React.FC = () => {
             try {
                 const fetchedLocations = await fetchLocations();
                 setLocations(fetchedLocations);
-            } catch (err) {
-                setError('No se pudieron cargar los elementos');
+            } catch (err:any) {            
+                setError(err?.response?.data?.error || 'No se pudieron cargar los elementos');
             } finally {
                 setLoading(false);
             }
@@ -26,53 +26,58 @@ const ItemList: React.FC = () => {
         getLocations();
     }, []);
 
-    if (loading) {
-        return <CircularProgress />;
-    }
-
-    if (error) {
-        return <Alert severity="error">{error}</Alert>;
-    }
+   
 
     return (
         <Container>
             <Typography variant="h5" component="h1" style={{ textAlign: 'center' }} gutterBottom>
                 Listado de Ubicaciones
             </Typography>
+
             <br />
-            <Grid container spacing={2} >
-                {locations.map((item) => (
+            {loading && (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+                    <CircularProgress />
+                </div>
+            )} 
+            {error ? (
+                <Alert severity="error">{error}</Alert>
+            ) : (                
+            
+                <Grid container spacing={2} >
+                    {locations.map((item) => (
 
-                    <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.code}>
-                        <Card >
-                            <CardMedia
-                                component="img"
-                                style={{
-                                    objectFit: 'cover', 
-                                    height: '120px', 
+                        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.code}>
+                            <Card >
+                                <CardMedia
+                                    component="img"
+                                    style={{
+                                        objectFit: 'cover', 
+                                        height: '120px', 
 
-                                }}
-                                height="120"
-                                image={item.image}
-                                alt={item.name}
-                            />
-                            <CardContent>
-                                <b>{item.code} - {item.name}</b>
-                                <div>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                    >
-                                        Fecha Creación: {item.creationDate}
-                                    </Typography>
+                                    }}
+                                    height="120"
+                                    image={item.image}
+                                    alt={item.name}
+                                />
+                                <CardContent>
+                                    <b>{item.code} - {item.name}</b>
+                                    <div>
+                                        <Typography
+                                            variant="body2"
+                                            color="textSecondary"
+                                        >
+                                            Fecha Creación: {item.creationDate}
+                                        </Typography>
 
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </Grid>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </Grid>
 
-                ))}
-            </Grid>
+                    ))}
+                </Grid>
+            )}
 
         </Container>
     );
