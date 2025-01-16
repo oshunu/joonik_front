@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://194.238.30.88:8401/api/'; //locations';
-const API_KEY = '122333444455555';
+const API_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 // Interfaz de Location
 export interface Location {
@@ -12,7 +12,7 @@ export interface Location {
 }
 
 interface ApiResponse {
-    data: Location[]; // La propiedad 'data' contiene un array de Location
+    data: Location[];
 }
 
 export const fetchLocations = async (): Promise<Location[]> => {
