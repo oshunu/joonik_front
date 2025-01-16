@@ -12,7 +12,7 @@ export interface Location {
 }
 
 interface ApiResponse {
-    data: Location[]; // La propiedad 'data' contiene un array de Location
+    data: Location[];
 }
 
 export const fetchLocations = async (): Promise<Location[]> => {
